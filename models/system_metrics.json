@@ -1,0 +1,77 @@
+{
+  "candidate_models": [
+    {
+      "Model": "XGBoost (Full Pipeline)",
+      "Accuracy": 1.0,
+      "Macro Precision": 1.0,
+      "Macro Recall": 1.0,
+      "Macro F1": 1.0,
+      "Weighted F1": 1.0,
+      "ROC-AUC (OvR)": 1.0,
+      "Log Loss": 0.0019
+    },
+    {
+      "Model": "Random Forest",
+      "Accuracy": 1.0,
+      "Macro Precision": 1.0,
+      "Macro Recall": 1.0,
+      "Macro F1": 1.0,
+      "Weighted F1": 1.0,
+      "ROC-AUC (OvR)": 1.0,
+      "Log Loss": 0.0105
+    },
+    {
+      "Model": "Logistic Regression",
+      "Accuracy": 0.9967,
+      "Macro Precision": 0.9964,
+      "Macro Recall": 0.9979,
+      "Macro F1": 0.9971,
+      "Weighted F1": 0.9967,
+      "ROC-AUC (OvR)": 1.0,
+      "Log Loss": 0.0141
+    },
+    {
+      "Model": "Decision Tree",
+      "Accuracy": 0.9933,
+      "Macro Precision": 0.9958,
+      "Macro Recall": 0.9926,
+      "Macro F1": 0.9942,
+      "Weighted F1": 0.9933,
+      "ROC-AUC (OvR)": 0.994,
+      "Log Loss": 0.2403
+    }
+  ],
+  "dual_model_comparison": [
+    {
+      "Model Version": "Full XGBoost Pipeline",
+      "Inputs Required": "14 Financial Attributes",
+      "Macro F1": 1.0,
+      "Accuracy": 1.0,
+      "User Friction": "High (Requires Full Bureau Records)"
+    },
+    {
+      "Model Version": "5-Question Reduced Model",
+      "Inputs Required": "5 Direct Self-Reported Metrics",
+      "Macro F1": 1.0,
+      "Accuracy": 1.0,
+      "User Friction": "Low (Zero Bureau Dependency)"
+    }
+  ],
+  "underwriting_risk": {
+    "total_poor_tested": 105,
+    "catastrophic_approvals": 0,
+    "hazard_rate_percent": 0.0
+  },
+  "feature_names_5q": [
+    "Monthly_Inhand_Salary",
+    "Outstanding_Debt",
+    "Credit_Utilization_Ratio",
+    "Delay_from_due_date",
+    "Num_Credit_Inquiries"
+  ],
+  "class_mapping": {
+    "0": "Good",
+    "1": "Poor",
+    "2": "Standard"
+  }
+}

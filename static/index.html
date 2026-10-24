@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreditSense AI // Multi-Agent Credit Risk Profiling & Rehabilitation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background glow layers -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <!-- Main Navigation Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">CreditSense <span>AI</span></div>
+          <div class="brand-subtitle">Multi-Agent Credit Underwriting & Rehabilitation Dossier</div>
+        </div>
+      </div>
+
+      <div class="header-badges">
+        <span class="system-badge langgraph">
+          <span class="pulsing-dot"></span> LangGraph 1.2 Active
+        </span>
+        <span class="system-badge model">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          XGBoost Dual-Engine
+        </span>
+        <button id="btn-toggle-benchmark" class="btn-ghost" title="View Training & Benchmark Metrics">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+          Model Analytics
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Quick Applicant Presets Strip -->
+  <section class="presets-strip">
+    <div class="container presets-container">
+      <span class="preset-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        1-Click Test Profiles:
+      </span>
+      <div class="preset-buttons">
+        <button class="preset-btn active" data-preset="preconfigured">Pre-Configured Benchmark</button>
+        <button class="preset-btn" data-preset="prime">Prime Tier-1 (Low Risk)</button>
+        <button class="preset-btn" data-preset="moderate">Borderline (Standard Risk)</button>
+        <button class="preset-btn" data-preset="distressed">Subprime (High Risk)</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Layout -->
+  <main class="container main-layout">
+    <!-- Left Column: Input Form -->
+    <aside class="input-panel glass-card">
+      <div class="panel-header">
+        <div class="panel-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Applicant Financial Profile
+        </div>
+        <div class="mode-toggle">
+          <button id="mode-5q" class="mode-btn active" type="button">5-Question Quick</button>
+          <button id="mode-full" class="mode-btn" type="button">Full Bureau</button>
+        </div>
+      </div>
+
+      <form id="applicant-form">
+        <!-- 1. Monthly Salary -->
+        <div class="form-group">
+          <div class="form-label-row">
+            <label for="monthly-salary">Monthly In-Hand Salary ($)</label>
+            <span class="value-chip" id="salary-display">$3,800</span>
+          </div>
+          <div class="slider-input-group">
+            <input type="number" id="monthly-salary" name="Monthly_Inhand_Salary" min="500" max="50000" step="50" value="3800" required>
+            <input type="range" class="range-slider" id="salary-slider" min="500" max="20000" step="100" value="3800">
+          </div>
+          <span class="field-hint">Net take-home cash flow after tax deductions.</span>
+        </div>
+
+        <!-- 2. Outstanding Debt -->
+        <div class="form-group">
+          <div class="form-label-row">
+            <label for="outstanding-debt">Total Outstanding Debt ($)</label>
+            <span class="value-chip" id="debt-display">$1,650</span>
+          </div>
+          <div class="slider-input-group">
+            <input type="number" id="outstanding-debt" name="Outstanding_Debt" min="0" max="100000" step="50" value="1650" required>
+            <input type="range" class="range-slider" id="debt-slider" min="0" max="25000" step="100" value="1650">
+          </div>
+          <span class="field-hint">Cumulative liabilities (credit cards, personal loans, overdrafts).</span>
+        </div>
+
+        <!-- 3. Credit Utilization -->
+        <div class="form-group">
+          <div class="form-label-row">
+            <label for="utilization">Revolving Credit Utilization (%)</label>
+            <span class="value-chip warning" id="utilization-display">54.0%</span>
+          </div>
+          <div class="slider-input-group">
+            <input type="number" id="utilization" name="Credit_Utilization_Ratio" min="0" max="100" step="0.5" value="54.0" required>
+            <input type="range" class="range-slider utilization-gradient" id="utilization-slider" min="0" max="100" step="1" value="54">
+          </div>
+          <div class="threshold-markers">
+            <span class="marker safe">&lt;30% Stable</span>
+            <span class="marker warning">30-60% Elevated</span>
+            <span class="marker critical">&gt;60% Critical</span>
+          </div>
+        </div>
+
+        <!-- 4. Payment Latency Days -->
+        <div class="form-group">
+          <div class="form-label-row">
+            <label for="delay-days">Average Payment Latency (Days Past Due)</label>
+            <span class="value-chip warning" id="delay-display">12.0 days</span>
+          </div>
+          <div class="slider-input-group">
+            <input type="number" id="delay-days" name="Delay_from_due_date" min="0" max="120" step="1" value="12" required>
+            <input type="range" class="range-slider" id="delay-slider" min="0" max="60" step="1" value="12">
+          </div>
+          <span class="field-hint">Average delay beyond due date across contractual obligations.</span>
+        </div>
+
+        <!-- 5. Hard Credit Inquiries -->
+        <div class="form-group">
+          <div class="form-label-row">
+            <label for="inquiries">Hard Credit Inquiries (Past 6 Months)</label>
+            <span class="value-chip" id="inquiries-display">4 Inquiries</span>
+          </div>
+          <div class="counter-input-group">
+            <button type="button" class="btn-step" id="inq-minus">-</button>
+            <input type="number" id="inquiries" name="Num_Credit_Inquiries" min="0" max="30" step="1" value="4" required>
+            <button type="button" class="btn-step" id="inq-plus">+</button>
+          </div>
+          <span class="field-hint">High velocity (&gt;3 inquiries) indicates credit-hungry behavior.</span>
+        </div>
+
+        <!-- Full Bureau Advanced Drawer -->
+        <details class="advanced-drawer" id="advanced-drawer">
+          <summary class="drawer-summary">
+            <span>Additional Bureau Parameters (Full Mode)</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="drawer-content">
+            <div class="form-group">
+              <label for="annual-income">Annual Gross Income ($)</label>
+              <input type="number" id="annual-income" name="Annual_Income" placeholder="Auto-calculated (Salary × 12)">
+            </div>
+            <div class="form-group">
+              <label for="monthly-emi">Total Monthly EMI ($)</label>
+              <input type="number" id="monthly-emi" name="Total_EMI_per_month" placeholder="Auto-estimated (Debt × 0.15)">
+            </div>
+            <div class="form-group">
+              <label for="num-loans">Number of Active Loans</label>
+              <input type="number" id="num-loans" name="Num_of_Loan" min="0" max="20" value="3">
+            </div>
+            <div class="form-group">
+              <label for="history-age">Credit History Tenure</label>
+              <input type="text" id="history-age" name="Credit_History_Age" value="6 Years and 2 Months">
+            </div>
+          </div>
+        </details>
+
+        <!-- Optional Gemini API Key Drawer -->
+        <div class="api-key-container">
+          <div class="form-label-row">
+            <label for="gemini-api-key">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              Google Gemini API Key (Optional)
+            </label>
+            <span class="optional-badge">Live 2.5 Flash</span>
+          </div>
+          <div class="input-with-button">
+            <input type="password" id="gemini-api-key" placeholder="AIzaSy... (Leave empty for analytical fallback)">
+            <button type="button" id="toggle-key-visibility" class="btn-icon" title="Toggle visibility">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" id="submit-btn" class="btn-primary">
+          <span class="btn-text">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Execute LangGraph Assessment
+          </span>
+          <span class="spinner hidden"></span>
+        </button>
+      </form>
+    </aside>
+
+    <!-- Right Column: Results & Dossier Dashboard -->
+    <section class="results-panel">
+      <!-- Section 1: ML Prediction & Risk Tier Card -->
+      <div class="glass-card result-card hero-prediction-card" id="card-prediction">
+        <div class="card-inner-split">
+          <!-- Rating badge -->
+          <div class="prediction-main">
+            <div class="sub-header-tag">1. MACHINE LEARNING DECISION</div>
+            <div class="rating-display">
+              <div class="rating-badge-large" id="res-score-badge">STANDARD</div>
+              <div class="risk-tier-pill" id="res-risk-tier">Medium Risk</div>
+            </div>
+            <div class="confidence-row">
+              <span>Model Confidence:</span>
+              <strong id="res-confidence">99.97%</strong>
+              <span class="mode-tag" id="res-mode-badge">5-Question Engine</span>
+            </div>
+          </div>
+
+          <!-- Probability breakdown -->
+          <div class="probabilities-container">
+            <div class="prob-title">Class Probabilities (Softmax Spread):</div>
+            
+            <div class="prob-item">
+              <div class="prob-labels">
+                <span class="class-name good">Good (Prime)</span>
+                <span class="prob-value" id="prob-val-good">0.01%</span>
+              </div>
+              <div class="prob-bar-track">
+                <div class="prob-bar-fill good" id="prob-bar-good" style="width: 1%;"></div>
+              </div>
+            </div>
+
+            <div class="prob-item">
+              <div class="prob-labels">
+                <span class="class-name standard">Standard (Moderate)</span>
+                <span class="prob-value" id="prob-val-standard">99.97%</span>
+              </div>
+              <div class="prob-bar-track">
+                <div class="prob-bar-fill standard" id="prob-bar-standard" style="width: 99.97%;"></div>
+              </div>
+            </div>
+
+            <div class="prob-item">
+              <div class="prob-labels">
+                <span class="class-name poor">Poor (High Hazard)</span>
+                <span class="prob-value" id="prob-val-poor">0.02%</span>
+              </div>
+              <div class="prob-bar-track">
+                <div class="prob-bar-fill poor" id="prob-bar-poor" style="width: 1%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Health Index & Financial Indicators Grid -->
+      <div class="grid-2-cols">
+        <!-- Credit Health Index Gauge -->
+        <div class="glass-card result-card health-index-card">
+          <div class="sub-header-tag">2. CREDIT HEALTH INDEX</div>
+          <div class="gauge-wrapper">
+            <svg class="radial-gauge" viewBox="0 0 120 120">
+              <circle class="gauge-bg" cx="60" cy="60" r="50"/>
+              <circle class="gauge-progress" id="gauge-circle" cx="60" cy="60" r="50" stroke-dasharray="314.15" stroke-dashoffset="91.1"/>
+            </svg>
+            <div class="gauge-center-text">
+              <span class="gauge-number" id="health-index-val">71.0</span>
+              <span class="gauge-scale">/ 100</span>
+            </div>
+          </div>
+          <div class="gauge-status" id="health-status-desc">Moderate Underwriting Strain</div>
+        </div>
+
+        <!-- 5 Core Benchmark Metrics Overview -->
+        <div class="glass-card result-card indicators-card">
+          <div class="sub-header-tag">FINANCIAL HEALTH BENCHMARKS</div>
+          <div class="indicators-list" id="indicators-container">
+            <!-- Populated dynamically via app.js -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Prioritized Quantitative Improvement Targets -->
+      <div class="glass-card result-card">
+        <div class="card-title-row">
+          <div class="sub-header-tag">3. QUANTITATIVE IMPROVEMENT TARGETS</div>
+          <span class="targets-count" id="targets-count">3 Actions Generated</span>
+        </div>
+        <div class="recommendations-grid" id="recommendations-container">
+          <!-- Populated dynamically via app.js -->
+        </div>
+      </div>
+
+      <!-- Section 4: Gemini 2.5 Flash Synthesis & Rehabilitation Plan -->
+      <div class="glass-card result-card dossier-narrative-card">
+        <div class="card-title-row">
+          <div class="sub-header-tag">4. GEMINI 2.5 FLASH SYNTHESIS & REHABILITATION PLAN</div>
+          <button id="btn-copy-dossier" class="btn-ghost-sm" title="Copy Dossier Text">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy Dossier
+          </button>
+        </div>
+        <div class="dossier-content" id="dossier-narrative-text">
+          <!-- Populated dynamically via app.js -->
+        </div>
+        <div class="academic-disclaimer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span><strong>Academic Decision-Support Boundary:</strong> This system is an academic machine learning framework and does not constitute official credit bureau scoring or autonomous credit sanctioning.</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Model Performance & Underwriting Risk Analytics Modal -->
+  <div class="modal-overlay hidden" id="modal-benchmarks">
+    <div class="modal-card glass-card">
+      <div class="modal-header">
+        <div class="modal-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+          Credit Underwriting Model Benchmarks & Risk Evaluation
+        </div>
+        <button class="modal-close" id="btn-close-modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Dual Architecture Comparison -->
+        <h3 class="modal-section-title">Dual-Model Architecture Comparison</h3>
+        <div class="table-responsive">
+          <table class="data-table" id="table-dual-model">
+            <thead>
+              <tr>
+                <th>Model Version</th>
+                <th>Inputs Required</th>
+                <th>Macro F1</th>
+                <th>Accuracy</th>
+                <th>User Friction</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Injected by app.js -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Candidate Baseline Models Table -->
+        <h3 class="modal-section-title">Candidate Baseline Models Evaluation</h3>
+        <div class="table-responsive">
+          <table class="data-table" id="table-candidate-models">
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>Accuracy</th>
+                <th>Macro Precision</th>
+                <th>Macro Recall</th>
+                <th>Macro F1</th>
+                <th>ROC-AUC</th>
+                <th>Log Loss</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Injected by app.js -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Underwriting Hazard Analysis -->
+        <h3 class="modal-section-title">Critical Underwriting Risk Analysis</h3>
+        <div class="hazard-stat-box" id="hazard-box">
+          <!-- Injected by app.js -->
+        </div>
+
+        <!-- Visual Plots Gallery -->
+        <h3 class="modal-section-title">Exploratory Visualizations & Confusion Matrix</h3>
+        <div class="plots-grid">
+          <div class="plot-item">
+            <h4>Dataset EDA Distributions</h4>
+            <img src="/api/plots/eda" alt="EDA Distribution" class="plot-img" onerror="this.style.display='none'">
+          </div>
+          <div class="plot-item">
+            <h4>XGBoost Normalized Confusion Matrix</h4>
+            <img src="/api/plots/confusion_matrix" alt="Confusion Matrix" class="plot-img" onerror="this.style.display='none'">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
